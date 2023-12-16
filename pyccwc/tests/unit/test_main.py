@@ -2,18 +2,10 @@ from pathlib import Path
 
 import pytest
 
-from pyccwc.main import process_file
-
-def test_number_of_lines_is_correct(files_and_results: tuple[Path, str]):
-    for file, result in files_and_results:
-        assert process_file(file, count_lines=True) == result
+from pyccwc.main import count, format
 
 
-@pytest.fixture
-def files_and_results(tmp_path: Path):
-    values = []
+@pytest.mark.parametrize("content,num_lines", [("A \n piece \n of text.", 3), ("another piece \n", 2)])
+def test_number_of_lines(content, num_lines):
+    assert count(content, count_lines=True) == num_lines
 
-    file = tmp_path / "test1.txt"
-    file.write_text("A \n piece \n of text.")
-    values.append((file, f"3 {file}"))
-    return values

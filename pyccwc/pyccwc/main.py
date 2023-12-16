@@ -1,11 +1,15 @@
 from pathlib import Path
 
-def process_file(file: Path, *, count_lines: bool) -> str:
-    result = ""
+
+def count(content: str, *, count_lines: bool) -> int:
+    result = -1
     if count_lines:
-        num_lines = len(file.read_text().splitlines())
-        result = f"{num_lines} {file}"
+        result = len(content.splitlines())
     return result
+
+
+def format(file: Path, count: int) -> str:
+    return f"{count} {file}"
 
 
 def _cli():
@@ -16,8 +20,7 @@ def _cli():
     parser.add_argument("-l", "--lines", action="store_true")
 
     args = parser.parse_args()
-
-    print(process_file(args.file, count_lines=args.lines))
+    print(format(args.file, count(args.file.read_text(), count_lines=args.lines)))
 
 
 if __name__ == "__main__":
