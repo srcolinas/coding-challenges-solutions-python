@@ -1,5 +1,13 @@
 from pathlib import Path
 
+def process_file(file: Path, *, count_lines: bool) -> str:
+    result = ""
+    if count_lines:
+        num_lines = len(file.read_text().splitlines())
+        result = f"{num_lines} {file}"
+    return result
+
+
 def _cli():
     import argparse
 
@@ -9,9 +17,8 @@ def _cli():
 
     args = parser.parse_args()
 
-    if args.lines:
-        num_lines = len(args.file.read_text().splitlines())
-        print(f"{num_lines} {args.file}")
+    print(process_file(args.file, count_lines=args.lines))
+
 
 if __name__ == "__main__":
     _cli()
